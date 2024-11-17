@@ -1,5 +1,4 @@
-# Photo Search and Save Application
-
+# Pinterest Clone
 ## Features
 
 ### User Authentication  
