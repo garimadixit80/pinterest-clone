@@ -9,26 +9,36 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+// ✅ MongoDB connection
 logger.info("connecting to", process.env.MONGODB_URI);
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => {
-    logger.info("connected to MongoDB");
+  .then(() => logger.info("connected to MongoDB"))
+  .catch((error) => logger.error("error connecting to MongoDB:", error.message));
+
+// ✅ Allow frontend requests (CORS fix)
+const allowedOrigins = [
+  "http://localhost:3000", // for local testing
+  "https://pinterestclonee.netlify.app", // ⚠️ replace this with your actual Netlify URL
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
   })
-  .catch((error) => {
-    logger.error("error connecting to MongoDB:", error.message);
-  });
+);
 
-app.use(cors());
+// ✅ Middleware setup
 app.use(express.json());
-
 app.use(passport.initialize());
 require("./utils/passport")(passport);
-
 app.use(middleware.requestLogger);
 
+// ✅ API routes
 app.use("/api/users", usersRouter);
 
+// ✅ Serve frontend in production (optional, if deploying together)
 if (process.env.NODE_ENV === "production") {
   const buildPath = path.resolve(__dirname, "..", "client", "build");
   app.use(express.static(buildPath));
