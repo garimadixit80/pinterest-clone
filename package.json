@@ -1,18 +1,18 @@
 {
   "name": "pinterest-clone",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pinterest Clone built with MERN Stack and Unsplash API",
   "main": "./server/index.js",
   "scripts": {
     "start": "cd server && node index.js",
-    "client": "cd client && npm start",
+    "client": "cd client && set NODE_OPTIONS=--openssl-legacy-provider && npm start",
     "server": "cd server && nodemon index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "lint": "eslint .",
     "heroku-postbuild": "cd client && npm install --production --no-shrinkwrap && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Garima Dixit",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
