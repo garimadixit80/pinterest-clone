@@ -5,8 +5,11 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const RECEIVE_SESSION_ERROR = "RECEIVE_SESSION_ERROR";
 export const CLEAR_SESSION_ERROR = "CLEAR_SESSION_ERROR";
 
-// ✅ Render backend base URL
+// ✅ Backend base URL (Render backend)
 const API_BASE_URL = "https://pinterest-clone-i7bd.onrender.com";
+
+// ✅ Set global axios base URL for userService
+userService.instance.defaults.baseURL = `${API_BASE_URL}/api/users`;
 
 export const setAuthToken = (token) => {
   if (token) {
@@ -32,7 +35,7 @@ export const clearError = () => ({
 
 export const signup = (userData) => async (dispatch) => {
   try {
-    await userService.signup(userData); // ✅ fixed
+    await userService.signup(userData);
     dispatch(login(userData));
   } catch (exception) {
     dispatch(receiveError(exception.response?.data?.error || "Signup failed"));
@@ -41,7 +44,7 @@ export const signup = (userData) => async (dispatch) => {
 
 export const login = (userData) => async (dispatch) => {
   try {
-    const response = await userService.login(userData); // ✅ fixed
+    const response = await userService.login(userData);
     const token = response.data.token;
     localStorage.setItem("jwtToken", token);
     setAuthToken(token);

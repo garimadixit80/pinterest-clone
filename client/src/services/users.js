@@ -1,7 +1,10 @@
 import axios from "axios";
 
+// ✅ Use same Render backend URL
+const API_BASE_URL = "https://pinterest-clone-i7bd.onrender.com/api/users";
+
 export const instance = axios.create({
-  baseURL: "https://pinterest-clone-i7bd.onrender.com/api/users", // ✅ fixed
+  baseURL: API_BASE_URL,
 });
 
 export const signup = async (userData) => {
