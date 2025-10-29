@@ -6,9 +6,11 @@ export const RECEIVE_SESSION_ERROR = "RECEIVE_SESSION_ERROR";
 export const CLEAR_SESSION_ERROR = "CLEAR_SESSION_ERROR";
 
 // ✅ Backend base URL (Render backend)
-const API_BASE_URL = "https://pinterest-clone-i7bd.onrender.com";
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://pinterest-clone-i7bd.onrender.com"; // fallback for safety
 
-// ✅ Set global axios base URL for userService
+// ✅ Configure axios globally inside userService
 userService.instance.defaults.baseURL = `${API_BASE_URL}/api/users`;
 
 export const setAuthToken = (token) => {
@@ -37,8 +39,8 @@ export const signup = (userData) => async (dispatch) => {
   try {
     await userService.signup(userData);
     dispatch(login(userData));
-  } catch (exception) {
-    dispatch(receiveError(exception.response?.data?.error || "Signup failed"));
+  } catch (error) {
+    dispatch(receiveError(error.response?.data?.error || "Signup failed"));
   }
 };
 
@@ -46,11 +48,12 @@ export const login = (userData) => async (dispatch) => {
   try {
     const response = await userService.login(userData);
     const token = response.data.token;
+
     localStorage.setItem("jwtToken", token);
     setAuthToken(token);
     dispatch(setCurrentUser(jwtDecode(token)));
-  } catch (exception) {
-    dispatch(receiveError(exception.response?.data?.error || "Login failed"));
+  } catch (error) {
+    dispatch(receiveError(error.response?.data?.error || "Login failed"));
   }
 };
 

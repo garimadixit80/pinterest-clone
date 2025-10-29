@@ -1,12 +1,17 @@
 import axios from "axios";
 
-// ✅ Use same Render backend URL
-const API_BASE_URL = "https://pinterest-clone-i7bd.onrender.com/api/users";
+// ✅ Use environment variable for flexibility (Netlify → Render)
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL ||
+  "https://pinterest-clone-i7bd.onrender.com/api/users"; // fallback if env missing
 
+// ✅ Create a reusable Axios instance
 export const instance = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true, // ensures cookies/JWT work across origins
 });
 
+// ✅ API Endpoints
 export const signup = async (userData) => {
   return await instance.post("/signup", userData);
 };
