@@ -1,12 +1,7 @@
 import axios from "axios";
 
-// 🔹 Use your Render backend URL here
-const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL ||
-  "https://your-render-backend-url.onrender.com/api/users"; // ⬅️ replace with your actual Render link
-
 export const instance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: "https://pinterest-clone-i7bd.onrender.com/api/users", // ✅ fixed
 });
 
 export const signup = async (userData) => {
