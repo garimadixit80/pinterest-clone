@@ -5,8 +5,11 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const RECEIVE_SESSION_ERROR = "RECEIVE_SESSION_ERROR";
 export const CLEAR_SESSION_ERROR = "CLEAR_SESSION_ERROR";
 
-// ✅ Use your Render backend URL here
+// ✅ Backend base URL (used inside userService only)
 const API_BASE_URL = "https://pinterest-clone-i7bd.onrender.com";
+
+// ✅ Set backend URL for axios instance globally
+userService.instance.defaults.baseURL = `${API_BASE_URL}/api/users`;
 
 export const setAuthToken = (token) => {
   if (token) {
@@ -26,14 +29,13 @@ export const receiveError = (error) => ({
   error,
 });
 
-export const clearError = (error) => ({
+export const clearError = () => ({
   type: CLEAR_SESSION_ERROR,
-  error,
 });
 
 export const signup = (userData) => async (dispatch) => {
   try {
-    await userService.signup(`${API_BASE_URL}/api/users/signup`, userData);
+    await userService.signup(userData); // ✅ uses correct baseURL
     dispatch(login(userData));
   } catch (exception) {
     dispatch(receiveError(exception.response?.data?.error || "Signup failed"));
@@ -42,7 +44,7 @@ export const signup = (userData) => async (dispatch) => {
 
 export const login = (userData) => async (dispatch) => {
   try {
-    const response = await userService.login(`${API_BASE_URL}/api/users/login`, userData);
+    const response = await userService.login(userData); // ✅ uses correct baseURL
     const token = response.data.token;
     localStorage.setItem("jwtToken", token);
     setAuthToken(token);
